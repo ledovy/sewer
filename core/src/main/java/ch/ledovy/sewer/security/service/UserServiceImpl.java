@@ -21,14 +21,14 @@ public class UserServiceImpl implements UserService {
 	private RoleRepository roleRepository;
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-
+	
 	@PostConstruct
 	public void initUsers() {
-		createUserIfNeeded("admin", "admin", new HashSet<>(roleRepository.findAll()));
+		createUserIfNeeded("admin", "admin", new HashSet<>(this.roleRepository.findAll()));
 	}
-
-	private void createUserIfNeeded(String username, String password, HashSet<Role> roles) {
-		User user = userRepository.findByUsername(username);
+	
+	private void createUserIfNeeded(final String username, final String password, final HashSet<Role> roles) {
+		User user = this.userRepository.findByUsername(username);
 		if (user == null) {
 			user = new User();
 			user.setUsername(username);
@@ -37,16 +37,16 @@ public class UserServiceImpl implements UserService {
 			save(user);
 		}
 	}
-
+	
 	@Override
-	public void save(User user) {
+	public void save(final User user) {
 		user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setRoles(new HashSet<>(this.roleRepository.findAll()));
 		this.userRepository.save(user);
 	}
-
+	
 	@Override
-	public User findByUsername(String username) {
+	public User findByUsername(final String username) {
 		return this.userRepository.findByUsername(username);
 	}
 }

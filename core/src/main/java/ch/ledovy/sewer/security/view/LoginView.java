@@ -24,13 +24,17 @@ import ch.ledovy.sewer.security.service.SecurityService;
 @SpringView(name = "login")
 public class LoginView extends VerticalLayout implements View, HasLogger {
 	
-	private Binder<User>	binder;
-	private User			user;
-	private SecurityService	service;
-	private Navigator		navigator;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Binder<User> binder;
+	private User user;
+	private SecurityService service;
+	private Navigator navigator;
 	
 	@Autowired
-	public LoginView(SecurityService service, Navigator navigator) {
+	public LoginView(final SecurityService service, final Navigator navigator) {
 		this.service = service;
 		this.navigator = navigator;
 		this.binder = new Binder<>(User.class);
@@ -39,8 +43,13 @@ public class LoginView extends VerticalLayout implements View, HasLogger {
 		
 		ShortcutListener loginShortcut = new ShortcutListener("", KeyCode.ENTER, (int[]) null) {
 			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+			
 			@Override
-			public void handleAction(Object sender, Object target) {
+			public void handleAction(final Object sender, final Object target) {
 				login();
 			}
 		};

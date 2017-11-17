@@ -21,12 +21,16 @@ import ch.ledovy.sewer.navigation.menu.MenuEntry;
 @UIScope
 public class MenuBarNavigation extends MenuBar implements Navigation {
 	
-	private final Navigator		navigator;
-	private SpringViewProvider	viewProvider;
-	private Messages			messages;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final Navigator navigator;
+	private SpringViewProvider viewProvider;
+	private Messages messages;
 	
 	@Autowired
-	public MenuBarNavigation(Navigator navigator, SpringViewProvider viewProvider, Messages messages) {
+	public MenuBarNavigation(final Navigator navigator, final SpringViewProvider viewProvider, final Messages messages) {
 		this.navigator = navigator;
 		this.viewProvider = viewProvider;
 		this.messages = messages;
@@ -38,7 +42,7 @@ public class MenuBarNavigation extends MenuBar implements Navigation {
 	}
 	
 	@Override
-	public void createMenu(Menu providedMenu) {
+	public void createMenu(final Menu providedMenu) {
 		removeItems();
 		List<String> menus = providedMenu.getMenus();
 		for (String menu : menus) {
@@ -57,7 +61,7 @@ public class MenuBarNavigation extends MenuBar implements Navigation {
 		}
 	}
 	
-	private boolean isViewAvailable(Class<? extends View> view) {
+	private boolean isViewAvailable(final Class<? extends View> view) {
 		String viewId = this.navigator.getViewId(view);
 		Collection<String> availableViews = this.viewProvider.getViewNamesForCurrentUI();
 		return availableViews.contains(viewId);

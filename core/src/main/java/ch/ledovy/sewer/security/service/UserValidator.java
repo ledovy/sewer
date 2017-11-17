@@ -15,16 +15,16 @@ public class UserValidator implements Validator {
 	private UserService userService;
 	
 	@Override
-	public boolean supports(Class<?> aClass) {
+	public boolean supports(final Class<?> aClass) {
 		return User.class.equals(aClass);
 	}
 	
 	@Override
-	public void validate(Object o, Errors errors) {
+	public void validate(final Object o, final Errors errors) {
 		User user = (User) o;
 		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
-		if (user.getUsername().length() < 6 || user.getUsername().length() > 32) {
+		if ((user.getUsername().length() < 6) || (user.getUsername().length() > 32)) {
 			errors.rejectValue("username", "Size.userForm.username");
 		}
 		if (this.userService.findByUsername(user.getUsername()) != null) {
@@ -32,7 +32,7 @@ public class UserValidator implements Validator {
 		}
 		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "NotEmpty");
-		if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
+		if ((user.getPassword().length() < 8) || (user.getPassword().length() > 32)) {
 			errors.rejectValue("password", "Size.userForm.password");
 		}
 		

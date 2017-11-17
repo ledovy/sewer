@@ -10,25 +10,24 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Component.Focusable;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.TwinColSelect;
+import com.vaadin.ui.VerticalLayout;
 
 import ch.ledovy.sewer.data.view.form.AbstractForm;
 import ch.ledovy.sewer.i18n.Messages;
 import ch.ledovy.sewer.security.model.Role;
 
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.TwinColSelect;
-import com.vaadin.ui.VerticalLayout;
-
 @SpringComponent
 @ViewScope
 public class RoleForm extends AbstractForm<Role> {
-	public final TextField				name;
-	public final TwinColSelect<String>	permissions;
-	private VerticalLayout				root;
-	private Messages					messages;
+	public final TextField name;
+	public final TwinColSelect<String> permissions;
+	private VerticalLayout root;
+	private Messages messages;
 	
 	@Autowired
-	public RoleForm(Messages messages) {
+	public RoleForm(final Messages messages) {
 		this.messages = messages;
 		this.name = messages.registerCaption("view.security.role.name.caption", new TextField(), this);
 		this.permissions = messages.registerCaption("view.security.role.permissions.caption", new TwinColSelect<>(), this);
@@ -49,7 +48,6 @@ public class RoleForm extends AbstractForm<Role> {
 	public Focusable getFirstFormField() {
 		return this.name;
 	}
-	
 	
 	@Override
 	public Component getForm() {

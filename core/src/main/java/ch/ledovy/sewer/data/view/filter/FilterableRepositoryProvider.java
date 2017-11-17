@@ -11,32 +11,36 @@ import com.vaadin.server.SerializablePredicate;
 import ch.ledovy.sewer.data.model.ParameterRepository;
 
 public class FilterableRepositoryProvider<I, P> extends AbstractBackEndDataProvider<I, P> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final ParameterRepository<I, P> repo;
 	private Optional<P> backendParameter = Optional.empty();
 	private Optional<SerializablePredicate<I>> memoryParameter = Optional.empty();
-
-	public FilterableRepositoryProvider(ParameterRepository<I, P> repo) {
+	
+	public FilterableRepositoryProvider(final ParameterRepository<I, P> repo) {
 		this.repo = repo;
 	}
-
+	
 	@Override
-	protected Stream<I> fetchFromBackEnd(Query<I, P> query) {
+	protected Stream<I> fetchFromBackEnd(final Query<I, P> query) {
 		List<I> list;
-		if (backendParameter.isPresent()) {
-			list = repo.applyFindByParameter(backendParameter.get());
+		if (this.backendParameter.isPresent()) {
+			list = this.repo.applyFindByParameter(this.backendParameter.get());
 		} else {
-			list = repo.findAll();
+			list = this.repo.findAll();
 		}
 		Stream<I> stream = list.stream();
-		if (memoryParameter.isPresent()) {
-			return stream.filter(memoryParameter.get());
+		if (this.memoryParameter.isPresent()) {
+			return stream.filter(this.memoryParameter.get());
 		} else {
 			return stream;
 		}
 	}
-
+	
 	@Override
-	protected int sizeInBackEnd(Query<I, P> query) {
+	protected int sizeInBackEnd(final Query<I, P> query) {
 		return (int) fetchFromBackEnd(query).count();
 		//		if (backendParameter.isPresent()) {
 		//			return repo.applyCountByParameter(backendParameter.get());
@@ -44,12 +48,12 @@ public class FilterableRepositoryProvider<I, P> extends AbstractBackEndDataProvi
 		//			return (int) repo.count();
 		//		}
 	}
-
-	public void setBackendParameter(P value) {
+	
+	public void setBackendParameter(final P value) {
 		this.backendParameter = Optional.ofNullable(value);
 	}
-
-	public void setInMemoryParameter(SerializablePredicate<I> value) {
-		memoryParameter = Optional.ofNullable(value);
+	
+	public void setInMemoryParameter(final SerializablePredicate<I> value) {
+		this.memoryParameter = Optional.ofNullable(value);
 	}
 }

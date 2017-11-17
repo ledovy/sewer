@@ -10,8 +10,8 @@ import com.vaadin.spring.annotation.UIScope;
 @SpringComponent
 @UIScope
 public class ThemeProvider {
-	private final SortedSet<String>	themes			= new TreeSet<>();
-	private String					defaultTheme	= null;
+	private final SortedSet<String> themes = new TreeSet<>();
+	private String defaultTheme = null;
 	
 	public Collection<String> getThemes() {
 		return this.themes;
@@ -21,7 +21,7 @@ public class ThemeProvider {
 		return this.defaultTheme;
 	}
 	
-	public void registerTheme(String themeName) {
+	public void registerTheme(final String themeName) {
 		this.themes.add(themeName);
 		if (this.defaultTheme == null) {
 			this.defaultTheme = themeName;

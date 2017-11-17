@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
  * without being static.
  */
 public interface HasLogger {
-
+	
 	default Logger getLogger() {
 		return LoggerFactory.getLogger(getClass());
 	}

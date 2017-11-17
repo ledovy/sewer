@@ -1,12 +1,5 @@
 package ch.ledovy.sewer.security.view.user;
 
-import static ch.ledovy.sewer.action.ExecutorFactory.create;
-import static ch.ledovy.sewer.data.view.CrudActions.createAddAction;
-import static ch.ledovy.sewer.data.view.CrudActions.createCancelAction;
-import static ch.ledovy.sewer.data.view.CrudActions.createDeleteAction;
-import static ch.ledovy.sewer.data.view.CrudActions.createEditAction;
-import static ch.ledovy.sewer.data.view.CrudActions.createSaveAction;
-
 import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +10,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.VerticalLayout;
 
+import ch.ledovy.sewer.action.ExecutorFactory;
 import ch.ledovy.sewer.data.view.CrudActions;
 import ch.ledovy.sewer.data.view.CrudView;
 import ch.ledovy.sewer.data.view.filter.FilterClearButton;
@@ -29,10 +23,14 @@ import ch.ledovy.sewer.security.model.User;
 @SpringView
 public class UserAdminView extends VerticalLayout implements CrudView {
 	
-	private Messages										messages;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Messages messages;
 	
 	@Autowired
-	public UserAdminView(UserCrudService service, Messages messages, UserForm form, UserAdminGrid list, UserFilter filterGui) {
+	public UserAdminView(final UserCrudService service, final Messages messages, final UserForm form, final UserAdminGrid list, final UserFilter filterGui) {
 		this.messages = messages;
 		//Filter
 		FilterPresenter<User, UserParameter> filter = FilterFactory.createBackendFilter(filterGui, list.getDataProvider());
@@ -49,11 +47,11 @@ public class UserAdminView extends VerticalLayout implements CrudView {
 		addComponent(actionBar);
 		addComponent(new HorizontalSplitPanel(list, editor));
 		//Actions
-		createDeleteAction(create(delete), list, service);
-		createSaveAction(create(update), list, form, service);
-		createCancelAction(create(cancel), form);
-		createAddAction(create(add), form, service);
-		createEditAction(create(list), list, form, service);
+		CrudActions.createDeleteAction(ExecutorFactory.create(delete), list, service);
+		CrudActions.createSaveAction(ExecutorFactory.create(update), list, form, service);
+		CrudActions.createCancelAction(ExecutorFactory.create(cancel), form);
+		CrudActions.createAddAction(ExecutorFactory.create(add), form, service);
+		CrudActions.createEditAction(ExecutorFactory.create(list), list, form, service);
 	}
 	
 	@PreDestroy

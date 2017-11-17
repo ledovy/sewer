@@ -15,14 +15,19 @@ import com.vaadin.ui.themes.ValoTheme;
  */
 @SpringComponent
 public class ConfirmDialogFactory extends DefaultConfirmDialogFactory {
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	@Override
-	protected List<Button> orderButtons(Button cancel, Button notOk, Button ok) {
+	protected List<Button> orderButtons(final Button cancel, final Button notOk, final Button ok) {
 		return Arrays.asList(ok, cancel);
 	}
-
+	
 	@Override
-	protected Button buildOkButton(String okCaption) {
+	protected Button buildOkButton(final String okCaption) {
 		Button okButton = super.buildOkButton(okCaption);
 		okButton.addStyleName(ValoTheme.BUTTON_DANGER);
 		return okButton;

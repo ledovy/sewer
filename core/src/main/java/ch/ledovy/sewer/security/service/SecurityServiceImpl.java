@@ -25,11 +25,11 @@ import ch.ledovy.sewer.security.model.User;
 
 @Service
 public class SecurityServiceImpl implements SecurityService, HasLogger {
-	private AuthenticationManager	authenticationManager;
-	private UserService				userService;
+	private AuthenticationManager authenticationManager;
+	private UserService userService;
 	
 	@Autowired
-	public SecurityServiceImpl(AuthenticationManager authenticationManager, UserService userService) {
+	public SecurityServiceImpl(final AuthenticationManager authenticationManager, final UserService userService) {
 		this.authenticationManager = authenticationManager;
 		this.userService = userService;
 	}
@@ -44,11 +44,8 @@ public class SecurityServiceImpl implements SecurityService, HasLogger {
 	 *         otherwise
 	 */
 	@Override
-	public boolean isCurrentUserInRole(String role) {
-		return getUserRoles().stream()
-				.filter(roleName -> roleName.equals(Objects.requireNonNull(role)))
-				.findAny()
-				.isPresent();
+	public boolean isCurrentUserInRole(final String role) {
+		return getUserRoles().stream().filter(roleName -> roleName.equals(Objects.requireNonNull(role))).findAny().isPresent();
 	}
 	
 	/**
@@ -68,14 +65,14 @@ public class SecurityServiceImpl implements SecurityService, HasLogger {
 	@Override
 	public boolean isLoggedIn() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null && UsernamePasswordAuthenticationToken.class.isInstance(authentication)) {
+		if ((authentication != null) && UsernamePasswordAuthenticationToken.class.isInstance(authentication)) {
 			return ((UsernamePasswordAuthenticationToken) authentication).isAuthenticated();
 		}
 		return false;
 	}
 	
 	@Override
-	public void login(String username, String password) {
+	public void login(final String username, final String password) {
 		//		try {
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, password);
 		Authentication token = this.authenticationManager.authenticate(authentication);
@@ -103,7 +100,7 @@ public class SecurityServiceImpl implements SecurityService, HasLogger {
 	}
 	
 	@Override
-	public void register(User user) {
+	public void register(final User user) {
 		this.userService.save(user);
 		//		login(user.getUsername(), user.getPassword());
 		//		reload();

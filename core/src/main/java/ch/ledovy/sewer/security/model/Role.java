@@ -11,14 +11,18 @@ import ch.ledovy.sewer.data.model.AbstractEntity;
 @Entity
 public class Role extends AbstractEntity {
 	
-	private String		name;
-	private Set<String>	permissions	= new HashSet<>();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String name;
+	private Set<String> permissions = new HashSet<>();
 	
 	public String getName() {
 		return this.name;
 	}
 	
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 	
@@ -27,7 +31,7 @@ public class Role extends AbstractEntity {
 		return this.permissions;
 	}
 	
-	public void setPermissions(Set<String> permissions) {
+	public void setPermissions(final Set<String> permissions) {
 		this.permissions = permissions;
 	}
 	

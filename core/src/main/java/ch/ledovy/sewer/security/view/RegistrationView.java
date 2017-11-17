@@ -22,8 +22,13 @@ import ch.ledovy.sewer.security.service.SecurityService;
 @SpringView(name = "register")
 public class RegistrationView extends VerticalLayout implements View {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	@Autowired
-	public RegistrationView(SecurityService service, Navigator navigator) {
+	public RegistrationView(final SecurityService service, final Navigator navigator) {
 		Binder<User> binder = new Binder<>(User.class);
 		User user = new User();
 		binder.readBean(user);

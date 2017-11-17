@@ -7,7 +7,7 @@ public class UserParameter {
 		this(null);
 	}
 	
-	public UserParameter(String name) {
+	public UserParameter(final String name) {
 		this.name = name;
 	}
 	
@@ -15,7 +15,7 @@ public class UserParameter {
 		return this.name;
 	}
 	
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 	

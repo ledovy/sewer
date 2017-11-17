@@ -5,11 +5,11 @@ import com.vaadin.server.Resource;
 
 public class MenuEntry {
 	
-	private final String				caption;
-	private final Resource				icon;
-	private final Class<? extends View>	viewClass;
+	private final String caption;
+	private final Resource icon;
+	private final Class<? extends View> viewClass;
 	
-	public MenuEntry(String caption, Resource icon, Class<? extends View> viewClass) {
+	public MenuEntry(final String caption, final Resource icon, final Class<? extends View> viewClass) {
 		this.caption = caption;
 		this.icon = icon;
 		this.viewClass = viewClass;

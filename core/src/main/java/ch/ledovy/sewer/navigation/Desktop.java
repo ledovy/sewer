@@ -31,22 +31,26 @@ import ch.ledovy.sewer.security.service.SecurityService;
 @UIScope
 public class Desktop extends Panel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//	public static final String							DEFAULT_THEME		= GreperyTheme.THEME_NAME;
-	private static final Class<? extends Navigation>	DEFAULT_NAVIGATION	= MenuBarNavigation.class;
-	private static final Locale							DEFAULT_LOCALE		= Locale.forLanguageTag("de");
-	private BeanFactory									beanFactory;
-	private UIEventBus									eventBus;
-	private Panel										target;
-	private ComboBox<String>							themeSelector;
-	private ComboBox<Class<? extends Navigation>>		naviTypeSelector;
-	private ComboBox<Locale>							localeSelector;
-	private Messages									messages;
-	private SecurityService								securityService;
-	private Menu										menu;
-	private ThemeProvider								themeProvider;
+	private static final Class<? extends Navigation> DEFAULT_NAVIGATION = MenuBarNavigation.class;
+	private static final Locale DEFAULT_LOCALE = Locale.forLanguageTag("de");
+	private BeanFactory beanFactory;
+	private UIEventBus eventBus;
+	private Panel target;
+	private ComboBox<String> themeSelector;
+	private ComboBox<Class<? extends Navigation>> naviTypeSelector;
+	private ComboBox<Locale> localeSelector;
+	private Messages messages;
+	private SecurityService securityService;
+	private Menu menu;
+	private ThemeProvider themeProvider;
 	
 	@Autowired
-	public Desktop(Navigator navigator, BeanFactory beanFactory, EventBus.UIEventBus eventBus, Messages messages, SecurityService securityService, ThemeProvider themeProvider) {
+	public Desktop(final Navigator navigator, final BeanFactory beanFactory, final EventBus.UIEventBus eventBus, final Messages messages, final SecurityService securityService, final ThemeProvider themeProvider) {
 		this.beanFactory = beanFactory;
 		this.eventBus = eventBus;
 		this.messages = messages;
@@ -57,8 +61,8 @@ public class Desktop extends Panel {
 		this.menu = beanFactory.getBean(Menu.class);
 		
 		createSelectors();
-		setLanguage(DEFAULT_LOCALE);
-		setNavigationType(DEFAULT_NAVIGATION);
+		setLanguage(Desktop.DEFAULT_LOCALE);
+		setNavigationType(Desktop.DEFAULT_NAVIGATION);
 	}
 	
 	public void createSelectors() {
@@ -86,9 +90,9 @@ public class Desktop extends Panel {
 		this.messages.registerListing(this.naviTypeSelector, this);
 		
 		this.localeSelector = this.messages.registerCaption("main.selector.locale", new ComboBox<>(), this);
-		this.localeSelector.setItems(Arrays.asList(DEFAULT_LOCALE, Locale.forLanguageTag("en")));
+		this.localeSelector.setItems(Arrays.asList(Desktop.DEFAULT_LOCALE, Locale.forLanguageTag("en")));
 		this.localeSelector.setEmptySelectionAllowed(false);
-		this.localeSelector.setValue(DEFAULT_LOCALE);
+		this.localeSelector.setValue(Desktop.DEFAULT_LOCALE);
 		this.localeSelector.addValueChangeListener(e -> setLanguage(e.getValue()));
 		this.localeSelector.setItemCaptionGenerator(item -> {
 			if ("de".equals(item.toString())) {
@@ -102,13 +106,13 @@ public class Desktop extends Panel {
 		this.messages.registerListing(this.localeSelector, this);
 	}
 	
-	private void setLanguage(Locale value) {
+	private void setLanguage(final Locale value) {
 		VaadinSession.getCurrent().setLocale(value);
 		setLocale(value);
 		this.eventBus.publish(EventScope.UI, this, new LocaleChangeEvent(value));
 	}
 	
-	private void setNavigationType(Class<? extends Navigation> value) {
+	private void setNavigationType(final Class<? extends Navigation> value) {
 		Navigation navigation = this.beanFactory.getBean(value);
 		navigation.createMenu(this.menu);
 		ComponentContainer oldContent = (ComponentContainer) getContent();
@@ -127,7 +131,7 @@ public class Desktop extends Panel {
 		setContent(layout);
 	}
 	
-	public ComponentContainer createGui(Panel content, Navigation navigation, Component selectors) {
+	public ComponentContainer createGui(final Panel content, final Navigation navigation, final Component selectors) {
 		if (!Component.class.isInstance(navigation)) {
 			throw new IllegalArgumentException(navigation.getClass() + " is not a " + Component.class.getName());
 		}

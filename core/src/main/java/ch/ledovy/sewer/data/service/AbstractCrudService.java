@@ -32,10 +32,9 @@ public abstract class AbstractCrudService<T, P, R extends JpaRepository<T, Long>
 	@Override
 	public T create() {
 		try {
-			return entityType.newInstance();
+			return this.entityType.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
-			throw new UnsupportedOperationException(
-					"Entity of type " + entityType.getName() + " is missing a public no-args constructor", e);
+			throw new UnsupportedOperationException("Entity of type " + this.entityType.getName() + " is missing a public no-args constructor", e);
 		}
 	}
 	

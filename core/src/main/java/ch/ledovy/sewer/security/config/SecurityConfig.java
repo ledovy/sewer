@@ -15,10 +15,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableConfigurationProperties(H2ConsoleProperties.class)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	private static final String	ROLENAME_ADMIN	= "ADMIN";
-	private static final String	ROLENAME_USER	= "USER";
-	public static final String	ROLE_ADMIN		= "ROLE_" + ROLENAME_ADMIN;
-	public static final String	ROLE_USER		= "ROLE_" + ROLENAME_USER;
+	private static final String ROLENAME_ADMIN = "ADMIN";
+	private static final String ROLENAME_USER = "USER";
+	public static final String ROLE_ADMIN = "ROLE_" + SecurityConfig.ROLENAME_ADMIN;
+	public static final String ROLE_USER = "ROLE_" + SecurityConfig.ROLENAME_USER;
 	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
@@ -26,14 +26,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorizeRequests = http
-				.csrf().disable()
-				.authorizeRequests();
-		authorizeRequests
-				.anyRequest().permitAll()
-				.and()
-				.httpBasic();
+	protected void configure(final HttpSecurity http) throws Exception {
+		ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorizeRequests = http.csrf().disable().authorizeRequests();
+		authorizeRequests.anyRequest().permitAll().and().httpBasic();
 		http.logout();
 	}
 	

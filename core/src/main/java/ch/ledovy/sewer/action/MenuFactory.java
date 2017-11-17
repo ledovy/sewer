@@ -7,81 +7,81 @@ import com.vaadin.ui.MenuBar;
 import ch.ledovy.sewer.i18n.Messages;
 
 public class MenuFactory {
-
-	public static Menu forContextMenu(ContextMenu context, Messages messages) {
+	
+	public static Menu forContextMenu(final ContextMenu context, final Messages messages) {
 		return new Menu() {
-
+			
 			@Override
-			public Executor addItem(String caption) {
+			public Executor addItem(final String caption) {
 				MenuItem item = context.addItem(caption, null);
 				messages.registerContextItem(caption, item, context);
 				return ExecutorFactory.create(item);
 			}
-
+			
 			@Override
-			public Menu addMenu(String caption) {
+			public Menu addMenu(final String caption) {
 				MenuItem item = context.addItem(caption, null);
 				messages.registerContextItem(caption, item, context);
-				return forMenuItem(item, messages);
+				return MenuFactory.forMenuItem(item, messages);
 			}
 		};
 	}
-
-	public static Menu forMenuItem(MenuItem context, Messages messages) {
+	
+	public static Menu forMenuItem(final MenuItem context, final Messages messages) {
 		return new Menu() {
-
+			
 			@Override
-			public Executor addItem(String caption) {
+			public Executor addItem(final String caption) {
 				MenuItem item = context.addItem(caption, null);
 				messages.registerContextItem(caption, item, context);
 				return ExecutorFactory.create(item);
 			}
-
+			
 			@Override
-			public Menu addMenu(String caption) {
+			public Menu addMenu(final String caption) {
 				MenuItem item = context.addItem(caption, null);
 				messages.registerContextItem(caption, item, context);
-				return forMenuItem(item, messages);
+				return MenuFactory.forMenuItem(item, messages);
 			}
 		};
 	}
-
-	public static Menu forMenuItem(com.vaadin.ui.MenuBar.MenuItem menu, Messages messages) {
+	
+	public static Menu forMenuItem(final com.vaadin.ui.MenuBar.MenuItem menu, final Messages messages) {
 		return new Menu() {
-
+			
 			@Override
-			public Menu addMenu(String caption) {
+			public Menu addMenu(final String caption) {
 				com.vaadin.ui.MenuBar.MenuItem item = menu.addItem(caption, null);
 				messages.registerMenuItem(caption, item, menu);
-				return forMenuItem(item, messages);
+				return MenuFactory.forMenuItem(item, messages);
 			}
-
+			
 			@Override
-			public Executor addItem(String caption) {
+			public Executor addItem(final String caption) {
 				com.vaadin.ui.MenuBar.MenuItem item = menu.addItem(caption, null);
 				messages.registerMenuItem(caption, item, menu);
 				return ExecutorFactory.create(item);
 			}
 		};
 	}
-
-	public static Menu forMenuBar(MenuBar menu, Messages messages) {
+	
+	public static Menu forMenuBar(final MenuBar menu, final Messages messages) {
 		return new Menu() {
-
+			
 			@Override
-			public Executor addItem(String caption) {
+			public Executor addItem(final String caption) {
 				com.vaadin.ui.MenuBar.MenuItem item = menu.addItem(caption, null);
 				messages.registerMenuItem(caption, item, menu);
 				return ExecutorFactory.create(item);
 			}
-
+			
 			@Override
-			public Menu addMenu(String caption) {
+			public Menu addMenu(final String caption) {
 				com.vaadin.ui.MenuBar.MenuItem item = menu.addItem(caption, null);
 				messages.registerMenuItem(caption, item, menu);
-				return forMenuItem(item, messages);
+				return MenuFactory.forMenuItem(item, messages);
 			}
 		};
 	}
-
+	
 }

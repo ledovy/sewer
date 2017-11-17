@@ -7,16 +7,20 @@ import ch.ledovy.sewer.action.Action;
 import ch.ledovy.sewer.action.Executor;
 
 final class SelectionActionEnabler<T, P> implements SelectionListener<T> {
-	private final Action	action;
-	private final Executor	executor;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final Action action;
+	private final Executor executor;
 	
-	public SelectionActionEnabler(Action action, Executor executor) {
+	public SelectionActionEnabler(final Action action, final Executor executor) {
 		this.action = action;
 		this.executor = executor;
 	}
 	
 	@Override
-	public void selectionChange(SelectionEvent<T> event) {
+	public void selectionChange(final SelectionEvent<T> event) {
 		try {
 			this.action.validate();
 			this.executor.setEnabled(true);

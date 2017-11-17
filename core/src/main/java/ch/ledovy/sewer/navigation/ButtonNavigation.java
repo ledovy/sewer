@@ -23,12 +23,16 @@ import ch.ledovy.sewer.navigation.menu.MenuEntry;
 @UIScope
 public class ButtonNavigation extends VerticalLayout implements Navigation {
 	
-	private final Navigator		navigator;
-	private SpringViewProvider	viewProvider;
-	private Messages			messages;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private final Navigator navigator;
+	private SpringViewProvider viewProvider;
+	private Messages messages;
 	
 	@Autowired
-	public ButtonNavigation(Navigator navigator, SpringViewProvider viewProvider, Messages messages) {
+	public ButtonNavigation(final Navigator navigator, final SpringViewProvider viewProvider, final Messages messages) {
 		this.navigator = navigator;
 		this.viewProvider = viewProvider;
 		this.messages = messages;
@@ -42,7 +46,7 @@ public class ButtonNavigation extends VerticalLayout implements Navigation {
 	}
 	
 	@Override
-	public void createMenu(Menu providedMenu) {
+	public void createMenu(final Menu providedMenu) {
 		removeAllComponents();
 		List<String> menus = providedMenu.getMenus();
 		for (String menu : menus) {
@@ -58,7 +62,7 @@ public class ButtonNavigation extends VerticalLayout implements Navigation {
 		}
 	}
 	
-	private Button createButton(String caption, Resource icon, Class<? extends View> view) {
+	private Button createButton(final String caption, final Resource icon, final Class<? extends View> view) {
 		Button button = this.messages.registerCaption(caption, new Button(icon), this);
 		if (isViewAvailable(view)) {
 			button.addClickListener(event -> {
@@ -70,7 +74,7 @@ public class ButtonNavigation extends VerticalLayout implements Navigation {
 		return button;
 	}
 	
-	private boolean isViewAvailable(Class<? extends View> view) {
+	private boolean isViewAvailable(final Class<? extends View> view) {
 		String viewId = this.navigator.getViewId(view);
 		Collection<String> availableViews = this.viewProvider.getViewNamesForCurrentUI();
 		return availableViews.contains(viewId);

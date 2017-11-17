@@ -16,6 +16,10 @@ import ch.ledovy.sewer.security.view.LoginView;
 @UIScope
 public class Navigator extends SpringNavigator {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private SecurityService service;
 	private String defaultView = "";
 	
@@ -56,8 +60,8 @@ public class Navigator extends SpringNavigator {
 		// if (!getState().isEmpty()) {
 		// return;
 		// }
-		if (service.isLoggedIn()) {
-			navigateTo(defaultView);
+		if (this.service.isLoggedIn()) {
+			navigateTo(this.defaultView);
 		} else {
 			navigateTo(LoginView.class);
 		}

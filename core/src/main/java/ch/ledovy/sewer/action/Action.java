@@ -6,9 +6,11 @@ public interface Action extends HasLogger {
 	
 	void execute();
 	
-	default void authorize() throws AuthorizationException {}
+	default void authorize() throws AuthorizationException {
+	}
 	
-	default void validate() throws ValidationException {}
+	default void validate() throws ValidationException {
+	}
 	
 	default void runAction() {
 		try {
@@ -20,22 +22,32 @@ public interface Action extends HasLogger {
 		}
 	}
 	
-	default void fail(Exception e) {
+	default void fail(final Exception e) {
 		getLogger().warn(e.getMessage(), e);
 	}
 	
 	public class AuthorizationException extends Exception {
-		public AuthorizationException(String msg) {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		
+		public AuthorizationException(final String msg) {
 			super(msg);
 		}
 	}
 	
 	public class ValidationException extends Exception {
-		public ValidationException(String msg) {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		
+		public ValidationException(final String msg) {
 			super(msg);
 		}
 		
-		public ValidationException(String msg, Throwable e) {
+		public ValidationException(final String msg, final Throwable e) {
 			super(msg, e);
 		}
 	}

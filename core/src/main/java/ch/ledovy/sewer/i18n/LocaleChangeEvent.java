@@ -6,7 +6,7 @@ public class LocaleChangeEvent {
 	
 	private Locale locale;
 	
-	public LocaleChangeEvent(Locale locale) {
+	public LocaleChangeEvent(final Locale locale) {
 		this.locale = locale;
 	}
 	

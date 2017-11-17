@@ -7,7 +7,7 @@ public class RoleParameter {
 		this(null);
 	}
 	
-	public RoleParameter(String name) {
+	public RoleParameter(final String name) {
 		this.name = name;
 	}
 	
@@ -15,7 +15,7 @@ public class RoleParameter {
 		return this.name;
 	}
 	
-	public void setName(String name) {
+	public void setName(final String name) {
 		this.name = name;
 	}
 	

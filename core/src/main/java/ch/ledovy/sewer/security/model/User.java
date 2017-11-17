@@ -14,16 +14,20 @@ import ch.ledovy.sewer.data.model.AbstractEntity;
 @Entity
 public class User extends AbstractEntity {
 	
-	private String		username;
-	private String		password;
-	private String		passwordConfirm;
-	private Set<Role>	roles;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String username;
+	private String password;
+	private String passwordConfirm;
+	private Set<Role> roles;
 	
 	public String getUsername() {
 		return this.username;
 	}
 	
-	public void setUsername(String username) {
+	public void setUsername(final String username) {
 		this.username = username;
 	}
 	
@@ -31,7 +35,7 @@ public class User extends AbstractEntity {
 		return this.password;
 	}
 	
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		this.password = password;
 	}
 	
@@ -40,7 +44,7 @@ public class User extends AbstractEntity {
 		return this.passwordConfirm;
 	}
 	
-	public void setPasswordConfirm(String passwordConfirm) {
+	public void setPasswordConfirm(final String passwordConfirm) {
 		this.passwordConfirm = passwordConfirm;
 	}
 	
@@ -50,7 +54,7 @@ public class User extends AbstractEntity {
 		return this.roles;
 	}
 	
-	public void setRoles(Set<Role> roles) {
+	public void setRoles(final Set<Role> roles) {
 		this.roles = roles;
 	}
 }

@@ -8,26 +8,25 @@ import com.vaadin.spring.annotation.SpringComponent;
 import com.vaadin.spring.annotation.ViewScope;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Component.Focusable;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.TextField;
 
 import ch.ledovy.sewer.data.view.form.AbstractForm;
 import ch.ledovy.sewer.i18n.Messages;
 
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextField;
-
 @SpringComponent
 @ViewScope
 public class RoleFilter extends AbstractForm<RoleParameter> {
-	public final TextField	name;
-	private Messages		messages;
+	public final TextField name;
+	private Messages messages;
 	
 	@Autowired
-	public RoleFilter(Messages messages) {
+	public RoleFilter(final Messages messages) {
 		this(new RoleParameter(), messages);
 		
 	}
 	
-	public RoleFilter(RoleParameter parameter, Messages messages) {
+	public RoleFilter(final RoleParameter parameter, final Messages messages) {
 		this.messages = messages;
 		this.name = messages.registerPlaceholder("view.model.ingredient.filter.name", new TextField(), this);
 		
@@ -60,7 +59,7 @@ public class RoleFilter extends AbstractForm<RoleParameter> {
 	
 	@Override
 	public boolean hasChanges() {
-		return this.binder != null && this.binder.hasChanges();
+		return (this.binder != null) && this.binder.hasChanges();
 	}
 	
 	@Override

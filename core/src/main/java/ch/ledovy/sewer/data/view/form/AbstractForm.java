@@ -4,8 +4,8 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 
 public abstract class AbstractForm<T> implements Form<T> {
-	private T			parameter;
-	protected Binder<T>	binder;
+	private T parameter;
+	protected Binder<T> binder;
 	
 	public AbstractForm() {
 		this.binder = new Binder<>();
@@ -25,14 +25,14 @@ public abstract class AbstractForm<T> implements Form<T> {
 	}
 	
 	@Override
-	public void setValue(T value) {
+	public void setValue(final T value) {
 		this.parameter = value;
 		this.binder.readBean(this.parameter);
 	}
 	
 	@Override
 	public boolean hasChanges() {
-		return this.binder != null && this.binder.hasChanges();
+		return (this.binder != null) && this.binder.hasChanges();
 	}
 	
 	@Override

@@ -13,8 +13,13 @@ import ch.ledovy.sewer.security.service.SecurityService;
 @SpringView(name = "logout")
 public class LogoutView extends VerticalLayout implements View {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	@Autowired
-	public LogoutView(SecurityService service) {
+	public LogoutView(final SecurityService service) {
 		service.logout();
 	}
 	

@@ -25,18 +25,18 @@ public class UserCrudService extends AbstractCrudService<User, UserParameter, Us
 	
 	@Override
 	public List<User> findAll() {
-		return repository.findAll();
+		return this.repository.findAll();
 	}
 	
 	@Override
 	public long count() {
-		return repository.count();
+		return this.repository.count();
 	}
 	
 	@Override
 	public List<User> applyFindByParameter(final UserParameter parameter) {
 		UserParameter p = sanitizeParameter(parameter);
-		List<User> users = repository.findByUsernameLikeIgnoreCase(p.getName());
+		List<User> users = this.repository.findByUsernameLikeIgnoreCase(p.getName());
 		for (User user : users) {
 			user.getRoles();
 		}
@@ -46,7 +46,7 @@ public class UserCrudService extends AbstractCrudService<User, UserParameter, Us
 	@Override
 	public int applyCountByParameter(final UserParameter parameter) {
 		UserParameter p = sanitizeParameter(parameter);
-		return repository.countByUsernameLikeIgnoreCase(p.getName());
+		return this.repository.countByUsernameLikeIgnoreCase(p.getName());
 	}
 	
 	private UserParameter sanitizeParameter(final UserParameter p) {

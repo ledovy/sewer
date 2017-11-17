@@ -14,21 +14,21 @@ import ch.ledovy.sewer.security.service.SecurityService;
 @SpringComponent
 public class SecurityAccessControl implements ViewAccessControl {
 	
-	private ViewAccessService	accessService;
-	private SecurityService		securityService;
+	private ViewAccessService accessService;
+	private SecurityService securityService;
 	
 	@Autowired
-	public SecurityAccessControl(ViewAccessService accessService, SecurityService securityService) {
+	public SecurityAccessControl(final ViewAccessService accessService, final SecurityService securityService) {
 		this.accessService = accessService;
 		this.securityService = securityService;
 	}
 	
 	@Override
-	public boolean isAccessGranted(UI ui, String beanName) {
+	public boolean isAccessGranted(final UI ui, final String beanName) {
 		return isViewAllowed(beanName);
 	}
 	
-	private boolean isViewAllowed(String viewName) {
+	private boolean isViewAllowed(final String viewName) {
 		boolean inRoles = true;
 		Set<String> neededRoles = this.accessService.getNeededRoles(viewName);
 		for (String role : neededRoles) {

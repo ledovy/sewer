@@ -18,11 +18,15 @@ import ch.ledovy.sewer.security.model.Role;
 @SpringComponent
 @ViewScope
 public class RoleAdminGrid extends Grid<Role> {
-	private Messages											messages;
-	private FilterableRepositoryProvider<Role, RoleParameter>	provider;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Messages messages;
+	private FilterableRepositoryProvider<Role, RoleParameter> provider;
 	
 	@Autowired
-	public RoleAdminGrid(Messages messages, RoleCrudService service) {
+	public RoleAdminGrid(final Messages messages, final RoleCrudService service) {
 		super(Role.class);
 		this.provider = new FilterableRepositoryProvider<>(service);
 		setDataProvider(this.provider);

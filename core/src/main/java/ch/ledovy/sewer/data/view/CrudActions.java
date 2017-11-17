@@ -33,38 +33,35 @@ public class CrudActions {
 	//TODO future targets
 	// - crud-menu-creation with a single line
 	// - grid with detail-view and editor in max. three lines
-	public static <T> void createAction(Executor trigger, ValueSource<T> source, Action processing) {
+	public static <T> void createAction(final Executor trigger, final ValueSource<T> source, final Action processing) {
 		trigger.setAction(processing);
-//		processing.setValueProvider(source);
-//		source.addChangeListener(t -> {
-//			try {
-//				processing.validate();
-//				trigger.setEnabled(true);
-//			} catch (ch.ledovy.sewer.action.Action.ValidationException e) {
-//				trigger.setEnabled(false);
-//			}
-//		});
+		//		processing.setValueProvider(source);
+		//		source.addChangeListener(t -> {
+		//			try {
+		//				processing.validate();
+		//				trigger.setEnabled(true);
+		//			} catch (ch.ledovy.sewer.action.Action.ValidationException e) {
+		//				trigger.setEnabled(false);
+		//			}
+		//		});
 	}
-
-	public static <T> void createInteractiveAction(Executor trigger, ValueSource<T> source, UserInteraction<T> target,
-			Action processing) {
-//		target.setProcessingAction(processing);
-//		createAction(trigger, source, () -> {
-//			target.presentToUser();
-//		});
+	
+	public static <T> void createInteractiveAction(final Executor trigger, final ValueSource<T> source, final UserInteraction<T> target, final Action processing) {
+		//		target.setProcessingAction(processing);
+		//		createAction(trigger, source, () -> {
+		//			target.presentToUser();
+		//		});
 	}
-
+	
 	// FIGHT FOR SIMPLICITY!
 	
-	public static <T> AddAction<T> createAddAction(final Executor executor, final ValueConsumer<T> form,
-			final ItemCreator<T> service) {
+	public static <T> AddAction<T> createAddAction(final Executor executor, final ValueConsumer<T> form, final ItemCreator<T> service) {
 		AddAction<T> action = new AddAction<>(form, service);
 		executor.setAction(action);
 		return action;
 	}
-
-	public static <T extends HasId<Long>, P> SaveAction<T> createSaveAction(final Executor executor, final Grid<T> grid,
-			final Form<T> form, final CrudService<T> service) {
+	
+	public static <T extends HasId<Long>, P> SaveAction<T> createSaveAction(final Executor executor, final Grid<T> grid, final Form<T> form, final CrudService<T> service) {
 		SaveAction<T> action = new SaveAction<>(grid, form, service);
 		StatusChangeListener listener = event -> {
 			if (event != null) {
@@ -81,9 +78,8 @@ public class CrudActions {
 		executor.setAction(action);
 		return action;
 	}
-
-	public static <T extends HasId<Long>, P> CancelAction<T> createCancelAction(final Executor executor,
-			final Form<T> form) {
+	
+	public static <T extends HasId<Long>, P> CancelAction<T> createCancelAction(final Executor executor, final Form<T> form) {
 		CancelAction<T> action = new CancelAction<>(form);
 		StatusChangeListener listener = event -> {
 			if (event != null) {
@@ -98,9 +94,8 @@ public class CrudActions {
 		executor.setAction(action);
 		return action;
 	}
-
-	public static <T extends HasId<Long>, P> DeleteAction<T> createDeleteAction(final Executor executor,
-			final Grid<T> grid, final CrudService<T> service) {
+	
+	public static <T extends HasId<Long>, P> DeleteAction<T> createDeleteAction(final Executor executor, final Grid<T> grid, final CrudService<T> service) {
 		DeleteAction<T> action = new DeleteAction<>(grid, service);
 		SelectionListener<T> listener = new SelectionActionEnabler<T, P>(action, executor);
 		grid.addSelectionListener(listener);
@@ -108,9 +103,8 @@ public class CrudActions {
 		executor.setAction(action);
 		return action;
 	}
-
-	public static <T extends HasId<Long>, P> EditAction<T> createEditAction(final Executor executor, final Grid<T> grid,
-			final Form<T> form, final CrudService<T> service) {
+	
+	public static <T extends HasId<Long>, P> EditAction<T> createEditAction(final Executor executor, final Grid<T> grid, final Form<T> form, final CrudService<T> service) {
 		EditAction<T> action = new EditAction<>(grid, form, service);
 		SelectionListener<T> listener = new SelectionActionEnabler<T, P>(action, executor);
 		grid.addSelectionListener(listener);
@@ -118,5 +112,5 @@ public class CrudActions {
 		executor.setAction(action);
 		return action;
 	}
-
+	
 }

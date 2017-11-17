@@ -1,7 +1,5 @@
 package ch.ledovy.sewer.security.view.role;
 
-import static ch.ledovy.sewer.action.ExecutorFactory.create;
-
 import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.VerticalLayout;
 
+import ch.ledovy.sewer.action.ExecutorFactory;
 import ch.ledovy.sewer.data.view.CrudActions;
 import ch.ledovy.sewer.data.view.CrudView;
 import ch.ledovy.sewer.data.view.filter.FilterClearButton;
@@ -23,10 +22,14 @@ import ch.ledovy.sewer.security.model.Role;
 
 @SpringView
 public class RoleAdminView extends VerticalLayout implements CrudView {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Messages messages;
 	
 	@Autowired
-	public RoleAdminView(RoleCrudService service, Messages messages, RoleAdminGrid list, RoleFilter filterGui, RoleForm form) {
+	public RoleAdminView(final RoleCrudService service, final Messages messages, final RoleAdminGrid list, final RoleFilter filterGui, final RoleForm form) {
 		this.messages = messages;
 		
 		FilterPresenter<Role, RoleParameter> filter = FilterFactory.createBackendFilter(filterGui, list.getDataProvider());
@@ -43,11 +46,11 @@ public class RoleAdminView extends VerticalLayout implements CrudView {
 		addComponent(actionBar);
 		addComponent(new HorizontalSplitPanel(list, editor));
 		
-		CrudActions.createDeleteAction(create(delete), list, service);
-		CrudActions.createSaveAction(create(update), list, form, service);
-		CrudActions.createCancelAction(create(cancel), form);
-		CrudActions.createAddAction(create(add), form, service);
-		CrudActions.createEditAction(create(list), list, form, service);
+		CrudActions.createDeleteAction(ExecutorFactory.create(delete), list, service);
+		CrudActions.createSaveAction(ExecutorFactory.create(update), list, form, service);
+		CrudActions.createCancelAction(ExecutorFactory.create(cancel), form);
+		CrudActions.createAddAction(ExecutorFactory.create(add), form, service);
+		CrudActions.createEditAction(ExecutorFactory.create(list), list, form, service);
 		
 	}
 	

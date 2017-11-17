@@ -10,8 +10,12 @@ import javax.persistence.Version;
 
 @MappedSuperclass
 public class AbstractEntity implements Serializable, HasId<Long> {
-	private Long	id;
-	private int		version;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Long id;
+	private int version;
 	
 	@Override
 	@Transient
@@ -26,7 +30,7 @@ public class AbstractEntity implements Serializable, HasId<Long> {
 		return this.id;
 	}
 	
-	public void setId(Long id) {
+	public void setId(final Long id) {
 		this.id = id;
 	}
 	
@@ -35,7 +39,7 @@ public class AbstractEntity implements Serializable, HasId<Long> {
 		return this.version;
 	}
 	
-	public void setVersion(int version) {
+	public void setVersion(final int version) {
 		this.version = version;
 	}
 	
@@ -49,7 +53,7 @@ public class AbstractEntity implements Serializable, HasId<Long> {
 	}
 	
 	@Override
-	public boolean equals(Object other) {
+	public boolean equals(final Object other) {
 		if (this.id == null) {
 			// New entities are only equal if the instance if the same
 			return super.equals(other);

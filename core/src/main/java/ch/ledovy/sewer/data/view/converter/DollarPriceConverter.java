@@ -13,21 +13,30 @@ import com.vaadin.spring.annotation.SpringComponent;
 @SpringComponent
 public class DollarPriceConverter extends StringToBigDecimalConverter {
 	
-	private static final String		ERROR_MSG			= "Invalid prices, please re-check the value";
-	private StringToDoubleConverter	doubleConverter		= new StringToDoubleConverter(ERROR_MSG);
-	private StringToDoubleConverter	currencyConverter	= new StringToDoubleConverter(ERROR_MSG) {
-															@Override
-															protected NumberFormat getFormat(Locale locale) {
-																return NumberFormat.getCurrencyInstance(Locale.US);
-															}
-														};
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static final String ERROR_MSG = "Invalid prices, please re-check the value";
+	private StringToDoubleConverter doubleConverter = new StringToDoubleConverter(DollarPriceConverter.ERROR_MSG);
+	private StringToDoubleConverter currencyConverter = new StringToDoubleConverter(DollarPriceConverter.ERROR_MSG) {
+		/**
+		* 
+		*/
+		private static final long serialVersionUID = 1L;
+		
+		@Override
+		protected NumberFormat getFormat(final Locale locale) {
+			return NumberFormat.getCurrencyInstance(Locale.US);
+		}
+	};
 	
 	public DollarPriceConverter() {
-		super(ERROR_MSG);
+		super(DollarPriceConverter.ERROR_MSG);
 	}
 	
 	@Override
-	public Result<BigDecimal> convertToModel(String value, ValueContext context) {
+	public Result<BigDecimal> convertToModel(final String value, final ValueContext context) {
 		Result<Double> price = this.currencyConverter.convertToModel(value, context);
 		if (price.isError()) {
 			// Try without dollar sign
@@ -37,7 +46,7 @@ public class DollarPriceConverter extends StringToBigDecimalConverter {
 	}
 	
 	@Override
-	public String convertToPresentation(BigDecimal value, ValueContext context) {
+	public String convertToPresentation(final BigDecimal value, final ValueContext context) {
 		if (value == null) {
 			return "";
 		} else {

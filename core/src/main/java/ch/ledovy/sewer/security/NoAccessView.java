@@ -12,6 +12,11 @@ import com.vaadin.ui.VerticalLayout;
 @SpringView
 public class NoAccessView extends VerticalLayout implements View {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	@PostConstruct
 	public void init() {
 		addComponent(new Label("ACCESS DENIED"));

@@ -1,15 +1,14 @@
 package ch.ledovy.sewer.action.crud;
 
 import ch.ledovy.sewer.action.Action;
-import ch.ledovy.sewer.action.Action.ValidationException;
 import ch.ledovy.sewer.data.view.form.Form;
 import ch.ledovy.sewer.data.view.form.FormDeactivationListener;
 
 public class CancelAction<T> implements Action {
-	private Form<T>						form;
-	private FormDeactivationListener	formDeactivationListener;
+	private Form<T> form;
+	private FormDeactivationListener formDeactivationListener;
 	
-	public CancelAction(Form<T> form) {
+	public CancelAction(final Form<T> form) {
 		this.form = form;
 	}
 	
@@ -32,7 +31,7 @@ public class CancelAction<T> implements Action {
 		this.formDeactivationListener.formDeactivated();
 	}
 	
-	public CancelAction<T> withFormDeactivationListener(FormDeactivationListener formDeactivationListener) {
+	public CancelAction<T> withFormDeactivationListener(final FormDeactivationListener formDeactivationListener) {
 		this.formDeactivationListener = formDeactivationListener;
 		return this;
 	}

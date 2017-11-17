@@ -21,11 +21,15 @@ import ch.ledovy.sewer.security.model.User;
 @SpringComponent
 @ViewScope
 public class UserAdminGrid extends Grid<User> {
-	private Messages											messages;
-	private FilterableRepositoryProvider<User, UserParameter>	provider;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Messages messages;
+	private FilterableRepositoryProvider<User, UserParameter> provider;
 	
 	@Autowired
-	public UserAdminGrid(UserCrudService service, Messages messages) {
+	public UserAdminGrid(final UserCrudService service, final Messages messages) {
 		super(User.class);
 		this.messages = messages;
 		

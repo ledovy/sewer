@@ -22,18 +22,23 @@ import ch.ledovy.sewer.log.HasLogger;
 
 public abstract class ComponentMessages implements Messages, HasLogger {
 	
-	private final Map<Object, Set<Object>>						sourceObjects	= new ConcurrentHashMap<>();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
-	private final Map<Component, String>						components		= new ConcurrentHashMap<>();
-	private final Map<MenuItem, String>							menuItems		= new ConcurrentHashMap<>();
-	private final Map<com.vaadin.contextmenu.MenuItem, String>	contextItems	= new ConcurrentHashMap<>();
-	private final Set<AbstractListing<?>>						listings		= new HashSet<>();
-	private final Map<Label, String>							labels			= new ConcurrentHashMap<>();
-	private final Map<Column<?, ?>, String>						columns			= new ConcurrentHashMap<>();
-	private final Map<AbstractTextField, String>				placeholders	= new ConcurrentHashMap<>();
+	private final Map<Object, Set<Object>> sourceObjects = new ConcurrentHashMap<>();
+	
+	private final Map<Component, String> components = new ConcurrentHashMap<>();
+	private final Map<MenuItem, String> menuItems = new ConcurrentHashMap<>();
+	private final Map<com.vaadin.contextmenu.MenuItem, String> contextItems = new ConcurrentHashMap<>();
+	private final Set<AbstractListing<?>> listings = new HashSet<>();
+	private final Map<Label, String> labels = new ConcurrentHashMap<>();
+	private final Map<Column<?, ?>, String> columns = new ConcurrentHashMap<>();
+	private final Map<AbstractTextField, String> placeholders = new ConcurrentHashMap<>();
 	
 	@Override
-	public String get(String id, Object... args) {
+	public String get(final String id, final Object... args) {
 		Locale locale = VaadinSession.getCurrent().getLocale();
 		try {
 			return getSource().getMessage(id, args, locale);
@@ -47,7 +52,7 @@ public abstract class ComponentMessages implements Messages, HasLogger {
 	}
 	
 	@Override
-	public <T extends Component> T registerCaption(String id, T component, Object source) {
+	public <T extends Component> T registerCaption(final String id, final T component, final Object source) {
 		getLogger().debug("register caption for " + component + " with key " + id);
 		String caption = get(id);
 		component.setCaption(caption);
@@ -57,7 +62,7 @@ public abstract class ComponentMessages implements Messages, HasLogger {
 	}
 	
 	@Override
-	public MenuItem registerMenuItem(String id, MenuItem item, Object source) {
+	public MenuItem registerMenuItem(final String id, final MenuItem item, final Object source) {
 		getLogger().debug("register menuitem " + item + " with key " + id);
 		String caption = get(id);
 		item.setText(caption);
@@ -67,7 +72,7 @@ public abstract class ComponentMessages implements Messages, HasLogger {
 	}
 	
 	@Override
-	public com.vaadin.contextmenu.MenuItem registerContextItem(String id, com.vaadin.contextmenu.MenuItem item, Object source) {
+	public com.vaadin.contextmenu.MenuItem registerContextItem(final String id, final com.vaadin.contextmenu.MenuItem item, final Object source) {
 		getLogger().debug("register contextitem " + item + " with key " + id);
 		String caption = get(id);
 		item.setText(caption);
@@ -77,7 +82,7 @@ public abstract class ComponentMessages implements Messages, HasLogger {
 	}
 	
 	@Override
-	public Label registerLabel(String id, Label label, Object source) {
+	public Label registerLabel(final String id, final Label label, final Object source) {
 		getLogger().debug("register label " + label + " with key " + id);
 		String caption = get(id);
 		label.setValue(caption);
@@ -87,7 +92,7 @@ public abstract class ComponentMessages implements Messages, HasLogger {
 	}
 	
 	@Override
-	public <T, P> Column<T, P> registerColumn(String id, Column<T, P> column, Object source) {
+	public <T, P> Column<T, P> registerColumn(final String id, final Column<T, P> column, final Object source) {
 		getLogger().debug("register column " + column + " with key " + id);
 		String caption = get(id);
 		column.setCaption(caption);
@@ -97,7 +102,7 @@ public abstract class ComponentMessages implements Messages, HasLogger {
 	}
 	
 	@Override
-	public <T extends AbstractListing<?>> T registerListing(T listing, Object source) {
+	public <T extends AbstractListing<?>> T registerListing(final T listing, final Object source) {
 		//TODO maybe move this functionality to an ItemCaptionGenerator
 		this.listings.add(listing);
 		registerObject(listing, source);
@@ -105,7 +110,7 @@ public abstract class ComponentMessages implements Messages, HasLogger {
 	}
 	
 	@Override
-	public <T extends AbstractTextField> T registerPlaceholder(String id, T field, Object source) {
+	public <T extends AbstractTextField> T registerPlaceholder(final String id, final T field, final Object source) {
 		getLogger().debug("register placeholder for " + field + " with key " + id);
 		String caption = get(id);
 		field.setPlaceholder(caption);
@@ -114,7 +119,7 @@ public abstract class ComponentMessages implements Messages, HasLogger {
 		return field;
 	}
 	
-	private void registerObject(Object component, Object source) {
+	private void registerObject(final Object component, final Object source) {
 		if (!this.sourceObjects.containsKey(source)) {
 			this.sourceObjects.put(source, new HashSet<>());
 		}
@@ -122,7 +127,7 @@ public abstract class ComponentMessages implements Messages, HasLogger {
 	}
 	
 	@Override
-	public void onEvent(Event<LocaleChangeEvent> event) {
+	public void onEvent(final Event<LocaleChangeEvent> event) {
 		getLogger().debug("locale changed to " + event.getPayload().getLocale());
 		for (Component c : this.components.keySet()) {
 			String id = this.components.get(c);
@@ -154,7 +159,7 @@ public abstract class ComponentMessages implements Messages, HasLogger {
 	}
 	
 	@Override
-	public void unregister(Object source) {
+	public void unregister(final Object source) {
 		if (this.sourceObjects.containsKey(source)) {
 			Set<Object> objects = this.sourceObjects.get(source);
 			for (Object o : objects) {

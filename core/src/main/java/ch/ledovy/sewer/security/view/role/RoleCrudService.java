@@ -29,13 +29,13 @@ public class RoleCrudService extends AbstractCrudService<Role, RoleParameter, Ro
 	@Override
 	public List<Role> applyFindByParameter(final RoleParameter parameter) {
 		RoleParameter p = sanitizeParameter(parameter);
-		return repository.findByNameLikeIgnoreCase(p.getName());
+		return this.repository.findByNameLikeIgnoreCase(p.getName());
 	}
 	
 	@Override
 	public int applyCountByParameter(final RoleParameter parameter) {
 		RoleParameter p = sanitizeParameter(parameter);
-		return repository.countByNameLikeIgnoreCase(p.getName());
+		return this.repository.countByNameLikeIgnoreCase(p.getName());
 	}
 	
 	private RoleParameter sanitizeParameter(final RoleParameter p) {
@@ -47,7 +47,7 @@ public class RoleCrudService extends AbstractCrudService<Role, RoleParameter, Ro
 	
 	@Override
 	public Role load(final long id) {
-		Role found = repository.findOne(id);
+		Role found = this.repository.findOne(id);
 		return found;
 	}
 }

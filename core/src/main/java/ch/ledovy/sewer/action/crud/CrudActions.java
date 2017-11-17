@@ -1,4 +1,4 @@
-package ch.ledovy.sewer.data.view;
+package ch.ledovy.sewer.action.crud;
 
 import com.vaadin.data.StatusChangeListener;
 import com.vaadin.event.selection.SelectionListener;
@@ -6,14 +6,12 @@ import com.vaadin.ui.Grid;
 
 import ch.ledovy.sewer.action.Action;
 import ch.ledovy.sewer.action.Executor;
-import ch.ledovy.sewer.action.crud.AddAction;
 import ch.ledovy.sewer.action.crud.AddAction.ItemCreator;
-import ch.ledovy.sewer.action.crud.CancelAction;
-import ch.ledovy.sewer.action.crud.DeleteAction;
-import ch.ledovy.sewer.action.crud.EditAction;
-import ch.ledovy.sewer.action.crud.SaveAction;
 import ch.ledovy.sewer.data.model.HasId;
 import ch.ledovy.sewer.data.service.CrudService;
+import ch.ledovy.sewer.data.view.UserInteraction;
+import ch.ledovy.sewer.data.view.ValueConsumer;
+import ch.ledovy.sewer.data.view.ValueSource;
 import ch.ledovy.sewer.data.view.form.Form;
 
 public class CrudActions {

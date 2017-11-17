@@ -1,4 +1,4 @@
-package ch.ledovy.sewer.data.view;
+package ch.ledovy.sewer.action.crud;
 
 import java.io.Serializable;
 

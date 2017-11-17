@@ -63,7 +63,7 @@ public class CrudActionsTest {
 		this.sewerGrid.shutdown();
 	}
 	
-
+	
 	private List<Planet> getGridItems(final Grid<Planet> grid) {
 		return grid.getDataProvider().fetch(new Query<>()).collect(Collectors.toList());
 	}
@@ -76,6 +76,9 @@ public class CrudActionsTest {
 	private void removeItem(final Planet p) {
 		this.eventBus.publish(this, (new RemoveItemEvent<Planet>(p)));
 	}
+	private void executeAction() {
+		this.button.click();
+	}
 	
 	@Test
 	public void testNewItems() {
@@ -83,13 +86,11 @@ public class CrudActionsTest {
 		CrudActions.createAction(ExecutorFactory.create(this.button), () -> new Planet(), p -> addItem(p));
 		assertSizeOfGrid(0);
 		
-		//run
-		this.button.click();
+		executeAction();
 		//assert
 		assertSizeOfGrid(1);
 		
-		//run
-		this.button.click();
+		executeAction();
 		//assert
 		assertSizeOfGrid(2);
 	}
@@ -101,8 +102,7 @@ public class CrudActionsTest {
 		CrudActions.createAction(ExecutorFactory.create(this.button), () -> example, p -> addItem(p));
 		assertSizeOfGrid(0);
 		
-		//run
-		this.button.click();
+		executeAction();
 		//assert
 		assertSizeOfGrid(1);
 		assertGridElements(example);
@@ -117,14 +117,12 @@ public class CrudActionsTest {
 		CrudActions.createAction(ExecutorFactory.create(this.button), () -> iterator.next(), p -> addItem(p));
 		assertSizeOfGrid(0);
 		
-		//run
-		this.button.click();
+		executeAction();
 		//assert
 		assertSizeOfGrid(1);
 		assertGridElements(p1);
 		
-		//run
-		this.button.click();
+		executeAction();
 		//assert
 		assertSizeOfGrid(2);
 		assertGridElements(p1, p2);
@@ -136,15 +134,13 @@ public class CrudActionsTest {
 		CrudActions.createAction(ExecutorFactory.create(this.button), () -> itemSingleton, p -> addItem(p));
 		assertSizeOfGrid(0);
 		
-		//run
-		this.button.click();
+		executeAction();
 		
 		//assert
 		assertSizeOfGrid(1);
 		assertGridElements(itemSingleton);
 		
-		//run
-		this.button.click();
+		executeAction();
 		//assert
 		assertSizeOfGrid(1);
 		assertGridElements(itemSingleton);
@@ -162,8 +158,7 @@ public class CrudActionsTest {
 		assertSizeOfGrid(2);
 		assertGridElements(itemUnchanged, itemToRemove);
 		
-		//run
-		this.button.click();
+		executeAction();
 		
 		//assert
 		assertGridElements(itemUnchanged);
@@ -180,8 +175,7 @@ public class CrudActionsTest {
 		assertSizeOfGrid(2);
 		assertGridElements(itemExistent1, itemExistent2);
 		
-		//run
-		this.button.click();
+		executeAction();
 		
 		//assert
 		assertGridElements(itemExistent1, itemExistent2);
@@ -209,8 +203,7 @@ public class CrudActionsTest {
 		Assert.assertEquals(nameUnchanged, itemUnchanged.getName());
 		Assert.assertEquals(nameBefore, itemToUpdate.getName());
 		
-		//run
-		this.button.click();
+		executeAction();
 		
 		//assert
 		assertGridElements(itemUnchanged, itemToUpdate);
@@ -238,7 +231,7 @@ public class CrudActionsTest {
 		assertGridElements(itemExistent1, itemExistent2);
 		
 		//run
-		this.button.click();
+		executeAction();
 		
 		//assert
 		assertGridElements(itemExistent1, itemExistent2);
@@ -246,10 +239,13 @@ public class CrudActionsTest {
 	}
 	/*
 	 * FLAVORS
-	 * - open editor in between
+	 * - use these test for the different flavors (different setup)
+	 * - open editor in between (wizard)
 	 * - different dataprovider -> service/repository
 	 * - feedback-handling / eventbus
 	 * - async
+	 * - use a service for add/update/remove
+	 * - batch-processing
 	 * ASSERTIONS
 	 * - items in grid
 	 * - values in column

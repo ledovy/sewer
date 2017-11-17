@@ -1,4 +1,4 @@
-package ch.ledovy.sewer.action.crud;
+package ch.ledovy.sewer.action.crud.legacy;
 
 import ch.ledovy.sewer.action.Action;
 import ch.ledovy.sewer.data.view.ValueConsumer;

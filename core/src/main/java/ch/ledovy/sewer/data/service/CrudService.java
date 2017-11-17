@@ -1,6 +1,6 @@
 package ch.ledovy.sewer.data.service;
 
-import ch.ledovy.sewer.action.crud.AddAction.ItemCreator;
+import ch.ledovy.sewer.action.crud.legacy.AddAction.ItemCreator;
 
 public interface CrudService<T> extends ItemCreator<T> {
 	

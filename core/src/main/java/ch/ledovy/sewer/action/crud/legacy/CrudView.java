@@ -1,4 +1,4 @@
-package ch.ledovy.sewer.action.crud;
+package ch.ledovy.sewer.action.crud.legacy;
 
 import java.io.Serializable;
 

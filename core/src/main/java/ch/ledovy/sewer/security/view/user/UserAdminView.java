@@ -11,8 +11,8 @@ import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.VerticalLayout;
 
 import ch.ledovy.sewer.action.ExecutorFactory;
-import ch.ledovy.sewer.action.crud.CrudActions;
-import ch.ledovy.sewer.action.crud.CrudView;
+import ch.ledovy.sewer.action.crud.legacy.CrudActions;
+import ch.ledovy.sewer.action.crud.legacy.CrudView;
 import ch.ledovy.sewer.data.view.filter.FilterClearButton;
 import ch.ledovy.sewer.data.view.filter.FilterFactory;
 import ch.ledovy.sewer.data.view.filter.FilterPresenter;

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>ch.ledovy.sewer</groupId>
+	<artifactId>sewer</artifactId>
+	<version>0.0.1</version>
+	<packaging>pom</packaging>
+
+
+	<properties>
+		<sewer.version>${project.version}</sewer.version>
+		<sewer.enconding>UTF-8</sewer.enconding>
+		<sewer.java.version>1.8</sewer.java.version>
+		<project.build.sourceEncoding>${sewer.encoding}</project.build.sourceEncoding>
+		<maven.compiler.target>${sewer.java.version}</maven.compiler.target>
+		<vaadin.version>8.1.0.rc1</vaadin.version>
+		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
+		<springboot.version>1.5.4.RELEASE</springboot.version>
+		<vaadin-spring.version>2.1.0.beta2</vaadin-spring.version>
+		<org.vaadin.spring.version>0.0.7.RELEASE</org.vaadin.spring.version>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
+	</properties>
+
+	<modules>
+		<module>core</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.5</version>
+		</dependency>
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<!-- SEWER -->
+			<dependency>
+				<groupId>ch.ledovy.sewer</groupId>
+				<artifactId>core</artifactId>
+				<version>${sewer.version}</version>
+			</dependency>
+			<!-- LIBRARIES -->
+			<dependency>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-bom</artifactId>
+				<version>${vaadin.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${springboot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<repositories>
+		<repository>
+			<id>vaadin-addons</id>
+			<url>http://maven.vaadin.com/vaadin-addons</url>
+		</repository>
+		<repository>
+			<id>vaadin-pre</id>
+			<url>http://maven.vaadin.com/vaadin-prereleases</url>
+		</repository>
+		<repository>
+			<id>vaadin-snapshot</id>
+			<url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>vaadin-pre</id>
+			<url>http://maven.vaadin.com/vaadin-prereleases</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>vaadin-snapshot</id>
+			<url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${springboot.version}</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>${maven.compiler.target}</source>
+					<target>${maven.compiler.target}</target>
+					<sourceEncoding>${sewer.encoding}</sourceEncoding>
+					<encoding>${sewer.encoding}</encoding>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+				<configuration>
+				<encoding>${sewer.encoding}</encoding>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+	<!-- repositories for deployment, for each id a server-entry is required 
+		in settings.xml to set username and password -->
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>ORCA Releases Repository</name>
+			<url>http://mavenproxy.orca.int/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>ORCA Snapshot Repository</name>
+			<url>http://mavenproxy.orca.int/content/repositories/snapshots</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+	</distributionManagement>
+
+</project>

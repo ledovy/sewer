@@ -11,6 +11,7 @@ import ch.ledovy.sewer.data.model.HasId;
 import ch.ledovy.sewer.data.service.CrudService;
 import ch.ledovy.sewer.data.view.UserInteraction;
 import ch.ledovy.sewer.data.view.ValueConsumer;
+import ch.ledovy.sewer.data.view.ValueProvider;
 import ch.ledovy.sewer.data.view.ValueSource;
 import ch.ledovy.sewer.data.view.form.Form;
 
@@ -31,8 +32,11 @@ public class CrudActions {
 	//TODO future targets
 	// - crud-menu-creation with a single line
 	// - grid with detail-view and editor in max. three lines
-	public static <T> void createAction(final Executor trigger, final ValueSource<T> source, final Action processing) {
-		trigger.setAction(processing);
+	public static <T> void createAction(final Executor trigger, final ValueProvider<T> source, final ValueConsumer<T> consumer) {
+		trigger.setAction(() -> {
+			consumer.setValue(source.getValue());
+		});
+		//		trigger.setAction(processing);
 		//		processing.setValueProvider(source);
 		//		source.addChangeListener(t -> {
 		//			try {

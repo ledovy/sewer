@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ch.ledovy.sewer</groupId>
 	<artifactId>sewer</artifactId>
 	<version>0.0.1</version>
 	<packaging>pom</packaging>
-
 
 	<properties>
 		<sewer.version>${project.version}</sewer.version>
@@ -38,6 +36,7 @@
 			<version>3.5</version>
 		</dependency>
 	</dependencies>
+
 	<dependencyManagement>
 		<dependencies>
 			<!-- SEWER -->
@@ -78,6 +77,7 @@
 			<url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
 		</repository>
 	</repositories>
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>vaadin-pre</id>
@@ -106,33 +106,30 @@
 					<encoding>${sewer.encoding}</encoding>
 				</configuration>
 			</plugin>
-			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>3.0.2</version>
 				<configuration>
-				<encoding>${sewer.encoding}</encoding>
+					<encoding>${sewer.encoding}</encoding>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
 
 
-	<!-- repositories for deployment, for each id a server-entry is required 
-		in settings.xml to set username and password -->
 	<distributionManagement>
+	<!-- repositories for deployment, for each id a server-entry is required in settings.xml to set username and password -->
 		<repository>
-			<id>releases</id>
-			<name>ORCA Releases Repository</name>
-			<url>http://mavenproxy.orca.int/content/repositories/releases</url>
+			<id>nexus-releases</id>
+			<name>Artifact Releases Repository</name>
+			<url>http://10.86.50.10:8081/content/groups/public</url>
 		</repository>
 		<snapshotRepository>
-			<id>snapshots</id>
-			<name>ORCA Snapshot Repository</name>
-			<url>http://mavenproxy.orca.int/content/repositories/snapshots</url>
+			<id>nexus-snapshots</id>
+			<name>Artifact Snapshot Repository</name>
+			<url>http://10.86.50.10:8081/content/groups/public-snapshots</url>
 			<uniqueVersion>false</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
-
 </project>

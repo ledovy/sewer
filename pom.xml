@@ -12,7 +12,7 @@
 		<sewer.version>${project.version}</sewer.version>
 		<sewer.enconding>UTF-8</sewer.enconding>
 		<sewer.java.version>1.8</sewer.java.version>
-		<project.build.sourceEncoding>${sewer.encoding}</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.target>${sewer.java.version}</maven.compiler.target>
 		<vaadin.version>8.1.0.rc1</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>

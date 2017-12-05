@@ -18,9 +18,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.vaadin.spring.events.EventBus;
 
 import com.vaadin.data.provider.Query;
+import com.vaadin.event.selection.SelectionListener;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 
+import ch.ledovy.sewer.action.Action;
+import ch.ledovy.sewer.action.Action.ValidationException;
+import ch.ledovy.sewer.action.Executor;
 import ch.ledovy.sewer.action.ExecutorFactory;
 import ch.ledovy.sewer.action.crud.AddItemEvent;
 import ch.ledovy.sewer.action.crud.GridFactory;
@@ -29,6 +33,7 @@ import ch.ledovy.sewer.action.crud.SewerGrid;
 import ch.ledovy.sewer.action.crud.UpdateItemEvent;
 import ch.ledovy.sewer.action.crud.legacy.CrudActions;
 import ch.ledovy.sewer.action.crud.test.model.Planet;
+import ch.ledovy.sewer.data.view.ValueProvider;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -63,149 +68,125 @@ public class CrudActionsTest {
 		this.sewerGrid.shutdown();
 	}
 	
-	
-	private List<Planet> getGridItems(final Grid<Planet> grid) {
-		return grid.getDataProvider().fetch(new Query<>()).collect(Collectors.toList());
-	}
-	private void addItem(final Planet p) {
-		this.eventBus.publish(this, (new AddItemEvent<Planet>(p)));
-	}
-	private void updateItem(final Planet item) {
-		this.eventBus.publish(this, (new UpdateItemEvent<Planet>(item)));
-	}
-	private void removeItem(final Planet p) {
-		this.eventBus.publish(this, (new RemoveItemEvent<Planet>(p)));
-	}
-	private void executeAction() {
-		this.button.click();
-	}
-	
 	@Test
 	public void testNewItems() {
-		//prepare
 		CrudActions.createAction(ExecutorFactory.create(this.button), () -> new Planet(), p -> addItem(p));
 		assertSizeOfGrid(0);
 		
 		executeAction();
-		//assert
 		assertSizeOfGrid(1);
 		
 		executeAction();
-		//assert
 		assertSizeOfGrid(2);
 	}
 	
 	@Test
 	public void testAddOneSpecificItem() {
-		//prepare
 		Planet example = new Planet();
+		
 		CrudActions.createAction(ExecutorFactory.create(this.button), () -> example, p -> addItem(p));
 		assertSizeOfGrid(0);
 		
 		executeAction();
-		//assert
 		assertSizeOfGrid(1);
 		assertGridElements(example);
 	}
 	
 	@Test
 	public void testAddTwoDifferentItems() {
-		//prepare
 		Planet p1 = new Planet();
 		Planet p2 = new Planet();
 		Iterator<Planet> iterator = Arrays.asList(p1, p2).iterator();
-		CrudActions.createAction(ExecutorFactory.create(this.button), () -> iterator.next(), p -> addItem(p));
+		
+		CrudActions.createAction(ExecutorFactory.create(this.button), () -> iterator.next(), p -> addItem(p), null);
 		assertSizeOfGrid(0);
 		
 		executeAction();
-		//assert
-		assertSizeOfGrid(1);
 		assertGridElements(p1);
 		
 		executeAction();
-		//assert
-		assertSizeOfGrid(2);
 		assertGridElements(p1, p2);
 	}
 	@Test
 	public void testAddTheSameItemTwice() {
-		//prepare
 		Planet itemSingleton = new Planet();
+		
 		CrudActions.createAction(ExecutorFactory.create(this.button), () -> itemSingleton, p -> addItem(p));
 		assertSizeOfGrid(0);
 		
 		executeAction();
-		
-		//assert
-		assertSizeOfGrid(1);
 		assertGridElements(itemSingleton);
 		
 		executeAction();
-		//assert
-		assertSizeOfGrid(1);
 		assertGridElements(itemSingleton);
 		
 	}
 	
 	@Test
 	public void testRemovePreviouslyAddedItem() {
-		//prepare
-		Planet itemUnchanged = new Planet();
-		addItem(itemUnchanged);
-		Planet itemToRemove = new Planet();
+		Planet itemUnchanged = addPlanet();
+		Planet itemToRemove = addPlanet();
 		addItem(itemToRemove);
+		
 		CrudActions.createAction(ExecutorFactory.create(this.button), () -> itemToRemove, p -> removeItem(p));
-		assertSizeOfGrid(2);
 		assertGridElements(itemUnchanged, itemToRemove);
 		
 		executeAction();
-		
-		//assert
 		assertGridElements(itemUnchanged);
 	}
 	@Test
 	public void testRemoveInexistentItem() {
-		//prepare
-		Planet itemExistent1 = new Planet();
-		addItem(itemExistent1);
-		Planet itemExistent2 = new Planet();
-		addItem(itemExistent2);
+		Planet itemExistent1 = addPlanet();
+		Planet itemExistent2 = addPlanet();
 		Planet itemInexistent = new Planet();
+		
 		CrudActions.createAction(ExecutorFactory.create(this.button), () -> itemInexistent, p -> removeItem(p));
-		assertSizeOfGrid(2);
 		assertGridElements(itemExistent1, itemExistent2);
 		
 		executeAction();
-		
-		//assert
 		assertGridElements(itemExistent1, itemExistent2);
-		
 	}
 	@Test
 	public void testUpdateSelectedItem() {
-		//prepare
 		String nameUnchanged = "A";
 		String nameBefore = "B";
 		String nameAfter = "Bb";
-		Planet itemUnchanged = new Planet();
-		addItem(itemUnchanged);
-		itemUnchanged.setName(nameUnchanged);
-		Planet itemToUpdate = new Planet();
-		addItem(itemToUpdate);
-		itemToUpdate.setName(nameBefore);
-		this.grid.select(itemToUpdate);
-		CrudActions.createAction(ExecutorFactory.create(this.button), () -> this.grid.getSelectedItems().iterator().next(), p -> {
+		Planet itemUnchanged = addPlanet(nameUnchanged);
+		Planet itemToUpdate = addPlanet(nameBefore);
+		
+		//add update action
+		Executor executor = ExecutorFactory.create(this.button);
+		ValueProvider<Planet> source = () -> this.grid.getSelectedItems().iterator().next();
+		Action action = CrudActions.createAction(executor, source, p -> {
 			p.setName(nameAfter);
-			updateItem(p);
+			//			updateItem(p);
+		}, () -> {
+			if (source.getValue() == null) {
+				throw new ValidationException("no value");
+			}
 		});
-		assertSizeOfGrid(2);
+		action.validate();
+		SelectionListener<Planet> listener = event -> {
+			action.validate();
+		};
+		this.grid.addSelectionListener(listener);
 		assertGridElements(itemUnchanged, itemToUpdate);
 		Assert.assertEquals(nameUnchanged, itemUnchanged.getName());
 		Assert.assertEquals(nameBefore, itemToUpdate.getName());
 		
-		executeAction();
+		this.grid.deselectAll();
+		Assert.assertFalse(this.button.isEnabled());
 		
-		//assert
+		this.grid.select(itemToUpdate);
+		Assert.assertTrue(this.button.isEnabled());
+		
+		//execute update action
+		executeAction();
+		//		assertGridElements(itemUnchanged, itemToUpdate);
+		//		Assert.assertEquals(nameUnchanged, itemUnchanged.getName());
+		//		Assert.assertEquals(nameBefore, itemToUpdate.getName());
+		//		
+		//		updateItem(itemToUpdate);
 		assertGridElements(itemUnchanged, itemToUpdate);
 		Assert.assertEquals(nameUnchanged, itemUnchanged.getName());
 		Assert.assertEquals(nameAfter, itemToUpdate.getName());
@@ -214,29 +195,27 @@ public class CrudActionsTest {
 	
 	@Test
 	public void testUpdateInexistentItem() {
-		//prepare
-		Planet itemExistent1 = new Planet();
-		addItem(itemExistent1);
-		Planet itemExistent2 = new Planet();
-		addItem(itemExistent2);
 		String nameBefore = "B";
 		String nameAfter = "Bb";
-		Planet itemInexistent = new Planet();
-		itemInexistent.setName(nameBefore);
+		
+		//prepare
+		Planet itemExistent1 = addPlanet();
+		Planet itemExistent2 = addPlanet();
+		Planet itemInexistent = createPlanet(nameBefore);
+		
+		//add update action
 		CrudActions.createAction(ExecutorFactory.create(this.button), () -> itemInexistent, p -> {
 			p.setName(nameAfter);
 			updateItem(p);
-		});
-		assertSizeOfGrid(2);
+		}, null);
 		assertGridElements(itemExistent1, itemExistent2);
 		
-		//run
+		//execute update action
 		executeAction();
-		
-		//assert
 		assertGridElements(itemExistent1, itemExistent2);
 		Assert.assertEquals(nameAfter, itemInexistent.getName());
 	}
+	
 	/*
 	 * FLAVORS
 	 * - use these test for the different flavors (different setup)
@@ -269,6 +248,37 @@ public class CrudActionsTest {
 	 * GridFactory.createPersistentGrid(config) return factory.getBean(SewerGrid.class).withConfiguration(config).withDataProvider(db);
 	 */
 	
+	private List<Planet> getGridItems(final Grid<Planet> grid) {
+		return grid.getDataProvider().fetch(new Query<>()).collect(Collectors.toList());
+	}
+	private Planet addPlanet(final String name) {
+		Planet itemUnchanged = createPlanet(name);
+		addItem(itemUnchanged);
+		return itemUnchanged;
+	}
+	private Planet addPlanet() {
+		return addPlanet(null);
+	}
+	private Planet createPlanet(final String name) {
+		Planet itemUnchanged = new Planet();
+		itemUnchanged.setName(name);
+		return itemUnchanged;
+	}
+	private Planet addItem(final Planet p) {
+		this.eventBus.publish(this, (new AddItemEvent<Planet>(p)));
+		return p;
+	}
+	private Planet updateItem(final Planet item) {
+		this.eventBus.publish(this, (new UpdateItemEvent<Planet>(item)));
+		return item;
+	}
+	private Planet removeItem(final Planet p) {
+		this.eventBus.publish(this, (new RemoveItemEvent<Planet>(p)));
+		return p;
+	}
+	private void executeAction() {
+		this.button.click();
+	}
 	private void assertSizeOfGrid(final int size) {
 		List<Planet> items = getGridItems(this.grid);
 		Assert.assertEquals(size, items.size());

@@ -38,11 +38,11 @@ public class SaveAction<T extends HasId<Long>> implements Action {
 	}
 	
 	@Override
-	public void validate() throws ValidationException {
+	public void validate() {
 		try {
 			this.form.validate();
 		} catch (Exception e) {
-			throw new ValidationException(e.getMessage());
+			//			throw new ValidationException(e.getMessage());
 		}
 	}
 	

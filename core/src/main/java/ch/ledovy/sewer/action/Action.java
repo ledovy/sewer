@@ -9,7 +9,7 @@ public interface Action extends HasLogger {
 	default void authorize() throws AuthorizationException {
 	}
 	
-	default void validate() throws ValidationException {
+	default void validate() {//throws ValidationException {
 	}
 	
 	default void runAction() {

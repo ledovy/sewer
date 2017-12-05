@@ -27,10 +27,10 @@ public class DeleteAction<T extends HasId<Long>> implements Action {
 	}
 	
 	@Override
-	public void validate() throws ValidationException {
+	public void validate() {
 		Set<T> selectedItems = this.grid.getSelectedItems();
 		if (selectedItems.isEmpty()) {
-			throw new ValidationException("Nichts ausgewählt");
+			//			throw new ValidationException("Nichts ausgewählt");
 		}
 	}
 	

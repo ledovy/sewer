@@ -24,7 +24,7 @@ final class SelectionActionEnabler<T, P> implements SelectionListener<T> {
 		try {
 			this.action.validate();
 			this.executor.setEnabled(true);
-		} catch (ch.ledovy.sewer.action.Action.ValidationException e) {
+		} catch (Exception e) {
 			this.executor.setEnabled(false);
 		}
 	}

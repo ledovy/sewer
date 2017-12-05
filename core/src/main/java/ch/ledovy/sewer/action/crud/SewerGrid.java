@@ -43,12 +43,13 @@ public class SewerGrid<T> {
 	public Grid<T> getView() {
 		return this.grid;
 	}
-	
 	public SewerGrid<T> withConfiguration(final GridConfigurator<T> config) {
+		config.configure(this.grid);
 		return this;
 	}
 	
 	public SewerGrid<T> withDataProvider(final DataProvider<T, ?> provider) {
+		//		this.grid.setDataProvider(provider);
 		return this;
 	}
 	

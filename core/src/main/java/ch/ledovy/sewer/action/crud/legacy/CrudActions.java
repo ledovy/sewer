@@ -6,16 +6,17 @@ import com.vaadin.ui.Grid;
 
 import ch.ledovy.sewer.action.Action;
 import ch.ledovy.sewer.action.Executor;
+import ch.ledovy.sewer.action.Validator;
 import ch.ledovy.sewer.action.crud.legacy.AddAction.ItemCreator;
 import ch.ledovy.sewer.data.model.HasId;
 import ch.ledovy.sewer.data.service.CrudService;
-import ch.ledovy.sewer.data.view.UserInteraction;
 import ch.ledovy.sewer.data.view.ValueConsumer;
+import ch.ledovy.sewer.data.view.ValueContainer;
 import ch.ledovy.sewer.data.view.ValueProvider;
-import ch.ledovy.sewer.data.view.ValueSource;
 import ch.ledovy.sewer.data.view.form.Form;
 
-public class CrudActions {
+public class CrudActions<T> {
+	
 	//TODO write tests to create this stuff... (probably not static methods?)
 	// - add new item (to table)
 	// - delete item with confirmation
@@ -32,28 +33,42 @@ public class CrudActions {
 	//TODO future targets
 	// - crud-menu-creation with a single line
 	// - grid with detail-view and editor in max. three lines
-	public static <T> void createAction(final Executor trigger, final ValueProvider<T> source, final ValueConsumer<T> consumer) {
-		trigger.setAction(() -> {
-			consumer.setValue(source.getValue());
-		});
-		//		trigger.setAction(processing);
-		//		processing.setValueProvider(source);
-		//		source.addChangeListener(t -> {
-		//			try {
-		//				processing.validate();
-		//				trigger.setEnabled(true);
-		//			} catch (ch.ledovy.sewer.action.Action.ValidationException e) {
-		//				trigger.setEnabled(false);
-		//			}
-		//		});
+	
+	public static <T> Action createAction(final Executor trigger, final ValueProvider<T> source, final ValueConsumer<T> consumer) {
+		return CrudActions.createAction(trigger, source, consumer, null);
+	}
+	public static <T> Action createAction(final Executor trigger, final ValueProvider<T> source, final ValueConsumer<T> consumer, final Validator validator) {
+		Action action = new Action() {
+			@Override
+			public void execute() {
+				T value = source.getValue();
+				consumer.setValue(value);
+			}
+			@Override
+			public void validate() {
+				try {
+					if (validator != null) {
+						validator.validate();
+					}
+					trigger.setEnabled(true);
+				} catch (ValidationException e) {
+					trigger.setEnabled(false);
+				} catch (Exception e) {
+					trigger.setEnabled(false);
+				}
+			}
+		};
+		trigger.setAction(action);
+		return action;
+	}
+	//--------------------------
+	
+	private ValueContainer<T> container;
+	public CrudActions(final ValueContainer<T> container) {
+		this.container = container;
+		// TODO crud-methods...
 	}
 	
-	public static <T> void createInteractiveAction(final Executor trigger, final ValueSource<T> source, final UserInteraction<T> target, final Action processing) {
-		//		target.setProcessingAction(processing);
-		//		createAction(trigger, source, () -> {
-		//			target.presentToUser();
-		//		});
-	}
 	
 	// FIGHT FOR SIMPLICITY!
 	
